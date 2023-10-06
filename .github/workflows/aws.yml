@@ -44,6 +44,18 @@ permissions:
   contents: read
 
 jobs:
+  run: docker build --tag my-image:v1 ./game-2048-example
+    runs-on: ubuntu-latest
+  
+  name: Push to ECR
+    id: ecr
+    uses: jwalton/gh-ecr-push@v1
+    with:
+      access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      region: us-east-1
+      image: my-image:v1
+      
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
